@@ -5,12 +5,11 @@ import * as process from 'node:process';
 
 const CLI_PACKAGE = '@genxapi/cli@latest' as const;
 const COMMAND_INTENT = `Run \`${CLI_PACKAGE} generate\``;
-const VALID_PUBLISH_MODES = ['none', 'npm', 'github-packages'] as const;
 const TRUE_BOOLEAN_INPUTS = ['true', '1', 'yes', 'y', 'on'] as const;
 const FALSE_BOOLEAN_INPUTS = ['false', '0', 'no', 'n', 'off'] as const;
 const MAX_CAPTURE_CHARS = 256 * 1024;
 
-type PublishMode = (typeof VALID_PUBLISH_MODES)[number];
+type PublishMode = string;
 type BooleanInputLiteral = (typeof TRUE_BOOLEAN_INPUTS)[number] | (typeof FALSE_BOOLEAN_INPUTS)[number];
 type StepOutcome = 'succeeded' | 'failed';
 
@@ -265,13 +264,17 @@ function normalizeOptions(inputs: ActionInputs, tokens: ResolvedTokens): Normali
 function parsePublishMode(rawValue: string): PublishMode {
   const normalized = rawValue.trim().toLowerCase();
 
-  if ((VALID_PUBLISH_MODES as readonly string[]).includes(normalized)) {
-    return normalized as PublishMode;
+  if (!normalized) {
+    return 'none';
   }
 
-  throw new Error(
-    `Unsupported publish-mode "${rawValue}". Supported values: ${VALID_PUBLISH_MODES.join(', ')}.`
-  );
+  if (!/^[a-z0-9][a-z0-9-]*$/.test(normalized)) {
+    throw new Error(
+      `Invalid publish-mode "${rawValue}". Use a lowercase identifier such as none, npm, github-packages, yarn, or pnpm.`
+    );
+  }
+
+  return normalized;
 }
 
 function parseBooleanInput(name: string, rawValue: string, fallback: boolean): boolean {
@@ -454,6 +457,12 @@ function validatePublishRequirements(publishMode: PublishMode, tokens: ResolvedT
   if (publishMode === 'github-packages' && !tokens.githubToken) {
     throw new Error(
       'publish-mode "github-packages" requires github-token or an existing GITHUB_TOKEN environment variable.'
+    );
+  }
+
+  if (!['none', 'npm', 'github-packages'].includes(publishMode)) {
+    warning(
+      `publish-mode "${publishMode}" is being passed through to the GenX API CLI. Wrapper-level credential checks only apply to npm and github-packages.`
     );
   }
 }
@@ -863,6 +872,10 @@ function getNpxCommand(): string {
 
 function addMask(value: string): void {
   process.stdout.write(`::add-mask::${escapeCommandValue(value)}\n`);
+}
+
+function warning(message: string): void {
+  process.stdout.write(`::warning::${escapeCommandValue(message)}\n`);
 }
 
 function fail(message: string): void {

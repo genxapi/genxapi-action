@@ -31,7 +31,7 @@ Users do not need to build the repository before using the action.
 | `config-path` | No |  | Local config file path. The action resolves it from `working-directory` and fails fast if it does not exist. |
 | `contract-path` | No |  | Local contract file path or remote `http/https` URL. Local paths are validated before execution. |
 | `output-path` | No |  | Output directory path. Relative values are normalized from `working-directory`. |
-| `publish-mode` | No | `none` | Passed as `--publish-mode <value>`. Supported values: `none`, `npm`, `github-packages`. |
+| `publish-mode` | No | `none` | Passed as `--publish-mode <value>`. Common values include `none`, `npm`, `github-packages`, `yarn`, and `pnpm`. Other CLI-supported values are passed through. |
 | `dry-run` | No | `false` | Safe boolean parsing. Accepts `true/false`, `1/0`, `yes/no`, `on/off`, `y/n`. |
 | `working-directory` | No | `.` | Process working directory. Resolved from `GITHUB_WORKSPACE` and validated before the CLI starts. |
 | `extra-args` | No |  | Additional CLI args as a JSON array string or newline-delimited list. Shell-style single-line splitting is intentionally rejected. |
@@ -50,12 +50,13 @@ Users do not need to build the repository before using the action.
 
 ## Required Secrets
 
-No secret is always required by the wrapper itself, but publish flows are validated early:
+No secret is always required by the wrapper itself, but known credentialed publish flows are validated early:
 
 - `publish-mode: npm` requires `npm-token` or an existing `NPM_TOKEN` / `NODE_AUTH_TOKEN` environment variable.
 - `publish-mode: github-packages` requires `github-token` or an existing `GITHUB_TOKEN` environment variable.
 
 The action masks resolved token values before any logging occurs.
+Other publish modes are passed through to the CLI unchanged, and any mode-specific validation beyond these wrapper checks remains the CLI's responsibility.
 
 ## Example Usage
 
@@ -116,7 +117,7 @@ jobs:
 
 - Missing `working-directory`: the action fails before invoking the CLI and shows the resolved path it checked.
 - Missing local `config-path` or `contract-path`: the action fails early with the normalized file path.
-- Invalid `publish-mode`: the action lists the supported values.
+- Invalid `publish-mode`: the action rejects malformed values early and otherwise passes CLI-supported modes through unchanged.
 - Missing publish credentials: the action explains which token input or environment variable is required.
 - Ambiguous `extra-args`: the action rejects shell-style single-line strings and asks for JSON array or newline-delimited input.
 

@@ -7,7 +7,6 @@ const process = require('node:process');
 
 const CLI_PACKAGE = '@genxapi/cli@latest';
 const COMMAND_INTENT = `Run \`${CLI_PACKAGE} generate\``;
-const VALID_PUBLISH_MODES = ['none', 'npm', 'github-packages'];
 const TRUE_BOOLEAN_INPUTS = ['true', '1', 'yes', 'y', 'on'];
 const FALSE_BOOLEAN_INPUTS = ['false', '0', 'no', 'n', 'off'];
 const MAX_CAPTURE_CHARS = 256 * 1024;
@@ -202,13 +201,17 @@ function normalizeOptions(inputs, tokens) {
 function parsePublishMode(rawValue) {
   const normalized = rawValue.trim().toLowerCase();
 
-  if (VALID_PUBLISH_MODES.includes(normalized)) {
-    return normalized;
+  if (!normalized) {
+    return 'none';
   }
 
-  throw new Error(
-    `Unsupported publish-mode "${rawValue}". Supported values: ${VALID_PUBLISH_MODES.join(', ')}.`
-  );
+  if (!/^[a-z0-9][a-z0-9-]*$/.test(normalized)) {
+    throw new Error(
+      `Invalid publish-mode "${rawValue}". Use a lowercase identifier such as none, npm, github-packages, yarn, or pnpm.`
+    );
+  }
+
+  return normalized;
 }
 
 function parseBooleanInput(name, rawValue, fallback) {
@@ -391,6 +394,12 @@ function validatePublishRequirements(publishMode, tokens) {
   if (publishMode === 'github-packages' && !tokens.githubToken) {
     throw new Error(
       'publish-mode "github-packages" requires github-token or an existing GITHUB_TOKEN environment variable.'
+    );
+  }
+
+  if (!['none', 'npm', 'github-packages'].includes(publishMode)) {
+    warning(
+      `publish-mode "${publishMode}" is being passed through to the GenX API CLI. Wrapper-level credential checks only apply to npm and github-packages.`
     );
   }
 }
@@ -793,6 +802,10 @@ function getNpxCommand() {
 
 function addMask(value) {
   process.stdout.write(`::add-mask::${escapeCommandValue(value)}\n`);
+}
+
+function warning(message) {
+  process.stdout.write(`::warning::${escapeCommandValue(message)}\n`);
 }
 
 function fail(message) {

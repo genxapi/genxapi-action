@@ -15,7 +15,7 @@ inputs:
     description: Output directory for generated files or packages.
     required: false
   publish-mode:
-    description: Publish mode passed to the GenX API CLI. Supported values: none, npm, github-packages.
+    description: Publish mode passed through to the GenX API CLI. Common values include none, npm, github-packages, yarn, and pnpm.
     required: false
     default: none
   dry-run:
