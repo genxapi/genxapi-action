@@ -123,7 +123,7 @@ jobs:
 
 ## Node Runtime Note
 
-`.nvmrc` is pinned to Node `25.8.0`, which was the latest stable Node.js release verified during implementation. GitHub Actions metadata supports `node20` and `node24` for JavaScript actions, so `action.yml` uses `node24` as the closest supported runtime while the repository itself stays pinned to the latest verified stable Node release.
+`.nvmrc` targets Node `24` and `package.json` allows Node `24` or higher. `action.yml` uses `node24`, which matches the current GitHub Actions JavaScript runtime line this action is intended to run on.
 
 ## Design Constraints
 
