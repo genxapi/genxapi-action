@@ -190,6 +190,10 @@ Run the CLI directly when you need local development flows, richer scripting out
 - Explicit CLI version pin by default
 - Documentation focused on GitHub Action usage rather than duplicating core product docs
 
+## License
+
+This repository is licensed under the Apache License 2.0. See [LICENSE](/Users/eduardo/projects/genxapi-action/LICENSE).
+
 ## Manual Testing
 
 Rebuild the committed action bundle after editing source:

@@ -6,7 +6,7 @@
   "private": false,
   "main": "dist/index.js",
   "scripts": {
-    "bundle": "ncc build src/index.js -o dist --license licenses.txt",
+    "bundle": "esbuild src/index.js --bundle --platform=node --format=cjs --target=node20 --outfile=dist/index.js --legal-comments=external",
     "check": "node --check src/index.js"
   },
   "keywords": [
@@ -26,6 +26,6 @@
     "@actions/core": "1.11.1"
   },
   "devDependencies": {
-    "@vercel/ncc": "0.38.3"
+    "esbuild": "0.25.1"
   }
 }
