@@ -4,6 +4,8 @@
 
 GenX API is the product. This repository is the GitHub Action that executes that product safely inside Actions.
 
+For core product documentation and official GenX API information, see [genxapi.dev](https://genxapi.dev).
+
 ## How It Relates To The GenX API CLI
 
 This action does not reimplement templates, orchestration, manifest logic, diffing, or publish behavior. It resolves GitHub Action inputs, invokes the published `genxapi` CLI with explicit arguments, passes through only the minimum required environment, and maps machine-readable CLI output back into GitHub Action outputs.
