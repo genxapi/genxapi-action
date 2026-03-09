@@ -4,9 +4,14 @@
   "description": "Official GitHub Action for GenX API, run contract driven client and package generation in CI using the GenX API CLI.",
   "license": "Apache-2.0",
   "engines": {
-    "node": ">=25.7.0 <26"
+    "node": ">=25.8.0 <26"
   },
   "scripts": {
-    "check": "node --check index.js"
+    "build": "tsc -p tsconfig.json",
+    "check": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.8.2"
   }
 }

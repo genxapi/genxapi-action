@@ -6,16 +6,16 @@ branding:
 
 inputs:
   config-path:
-    description: Path to the GenX API config file.
+    description: Local path to the GenX API config file.
     required: false
   contract-path:
-    description: Local path or remote URL to the OpenAPI or Swagger contract.
+    description: Local path or remote http/https URL to the OpenAPI or Swagger contract.
     required: false
   output-path:
     description: Output directory for generated files or packages.
     required: false
   publish-mode:
-    description: Publish mode passed to the GenX API CLI.
+    description: Publish mode passed to the GenX API CLI. Supported values: none, npm, github-packages.
     required: false
     default: none
   dry-run:
@@ -23,17 +23,17 @@ inputs:
     required: false
     default: "false"
   working-directory:
-    description: Directory where the GenX API CLI should run.
+    description: Directory where the GenX API CLI should run. Resolved relative to GITHUB_WORKSPACE.
     required: false
     default: .
   extra-args:
     description: Additional CLI arguments as a JSON array string or newline-delimited list.
     required: false
   npm-token:
-    description: npm token passed through to the CLI when needed.
+    description: npm token forwarded to the CLI as NPM_TOKEN and NODE_AUTH_TOKEN when needed.
     required: false
   github-token:
-    description: GitHub token passed through to the CLI when needed.
+    description: GitHub token forwarded to the CLI as GITHUB_TOKEN when needed.
     required: false
 
 outputs:
@@ -50,4 +50,4 @@ outputs:
 
 runs:
   using: node24
-  main: index.js
+  main: dist/index.js
