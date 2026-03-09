@@ -1,0 +1,18 @@
+{
+  "name": "genxapi-action",
+  "version": "0.1.0",
+  "description": "Official GitHub Action for GenX API, run contract driven client and package generation in CI using the GenX API CLI.",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "check": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.8.2"
+  }
+}
