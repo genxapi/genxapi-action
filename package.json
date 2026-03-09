@@ -1,0 +1,31 @@
+{
+  "name": "genxapi-action",
+  "version": "0.1.0",
+  "description": "Official GitHub Action wrapper for running the GenX API CLI in GitHub workflows.",
+  "license": "Apache-2.0",
+  "private": false,
+  "main": "dist/index.js",
+  "scripts": {
+    "bundle": "ncc build src/index.js -o dist --license licenses.txt",
+    "check": "node --check src/index.js"
+  },
+  "keywords": [
+    "github-action",
+    "genxapi",
+    "openapi",
+    "codegen"
+  ],
+  "files": [
+    "action.yml",
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@actions/core": "1.11.1"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "0.38.3"
+  }
+}
