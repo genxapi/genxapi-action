@@ -1,31 +1,12 @@
 {
   "name": "genxapi-action",
   "version": "0.1.0",
-  "description": "Official GitHub Action wrapper for running the GenX API CLI in GitHub workflows.",
+  "description": "Official GitHub Action for GenX API, run contract driven client and package generation in CI using the GenX API CLI.",
   "license": "Apache-2.0",
-  "private": false,
-  "main": "dist/index.js",
+  "engines": {
+    "node": ">=25.7.0 <26"
+  },
   "scripts": {
-    "bundle": "esbuild src/index.js --bundle --platform=node --format=cjs --target=node20 --outfile=dist/index.js --legal-comments=external",
-    "check": "node --check src/index.js"
-  },
-  "keywords": [
-    "github-action",
-    "genxapi",
-    "openapi",
-    "codegen"
-  ],
-  "files": [
-    "action.yml",
-    "dist",
-    "src",
-    "README.md",
-    "LICENSE"
-  ],
-  "dependencies": {
-    "@actions/core": "1.11.1"
-  },
-  "devDependencies": {
-    "esbuild": "0.25.1"
+    "check": "node --check index.js"
   }
 }

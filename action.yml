@@ -5,59 +5,49 @@ branding:
   color: blue
 
 inputs:
-  genxapi-version:
-    description: Explicit GenX API CLI version to execute through npx.
-    required: false
-    default: 0.1.0
   config-path:
-    description: Path to the GenX API config file passed to the CLI.
+    description: Path to the GenX API config file.
     required: false
   contract-path:
-    description: Local path or remote URL for the OpenAPI or Swagger contract.
+    description: Local path or remote URL to the OpenAPI or Swagger contract.
     required: false
   output-path:
-    description: Output directory for generated files or publishable package artifacts.
+    description: Output directory for generated files or packages.
     required: false
   publish-mode:
-    description: Publish mode forwarded to the GenX API CLI. Supported wrapper values are none, npm, and github-packages.
+    description: Publish mode passed to the GenX API CLI.
     required: false
     default: none
   dry-run:
-    description: When true, request validation and planning without full generation or publish.
+    description: When true, request validation and planning without a full publish flow.
     required: false
     default: "false"
   working-directory:
-    description: Directory from which the GenX API CLI should run.
+    description: Directory where the GenX API CLI should run.
     required: false
     default: .
   extra-args:
-    description: Extra CLI arguments as a JSON array string or newline-delimited list.
+    description: Additional CLI arguments as a JSON array string or newline-delimited list.
     required: false
   npm-token:
-    description: npm token exposed only to the GenX API CLI for npm publish flows.
+    description: npm token passed through to the CLI when needed.
     required: false
   github-token:
-    description: GitHub token exposed only to the GenX API CLI for GitHub-aware flows.
+    description: GitHub token passed through to the CLI when needed.
     required: false
 
 outputs:
-  resolved-contract-source:
-    description: Resolved contract source reported by the GenX API CLI.
-  template:
-    description: Template identifier reported by the GenX API CLI.
-  output-path:
-    description: Output path resolved by the action or reported by the GenX API CLI.
-  manifest-path:
-    description: Manifest path reported by the GenX API CLI.
-  published-package-name:
-    description: Published package name reported by the GenX API CLI.
-  published-package-version:
-    description: Published package version reported by the GenX API CLI.
-  release-manifest-path:
-    description: Release manifest path reported by the GenX API CLI.
   summary:
-    description: Human-readable execution summary.
+    description: Short execution summary.
+  command:
+    description: Sanitized command that the action executed.
+  working-directory:
+    description: Resolved working directory used for execution.
+  manifest-path:
+    description: Manifest path when the CLI reports one.
+  release-manifest-path:
+    description: Release manifest path when the CLI reports one.
 
 runs:
   using: node24
-  main: dist/index.js
+  main: index.js
